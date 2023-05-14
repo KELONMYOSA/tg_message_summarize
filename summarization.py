@@ -44,26 +44,22 @@ def break_up_messages_to_chunks(
         n_tokens = m["n_tokens"]
         if n_tokens > chunk_size:
             if len(current_messages) != 0:
-                chunk_text = get_plain_text(current_messages)
-                chunks.append(chunk_text)
+                chunks.append(get_plain_text(current_messages))
 
             m_1 = m.copy()
             m_2 = m.copy()
 
             m_1["text"] = m_1["text"][:len(m_1["text"]) // 2]
-            chunk_text = get_plain_text([m_1])
-            chunks.append(chunk_text)
+            chunks.append(get_plain_text([m_1]))
 
             m_2["text"] = m_2["text"][len(m_2["text"]) // 2:]
-            chunk_text = get_plain_text([m_2])
-            chunks.append(chunk_text)
+            chunks.append(get_plain_text([m_2]))
 
             current_tokens = 0
             current_messages = []
 
         elif current_tokens + n_tokens > chunk_size:
-            chunk_text = get_plain_text(current_messages)
-            chunks.append(chunk_text)
+            chunks.append(get_plain_text(current_messages))
 
             if len(current_messages) == 1:
                 current_tokens = n_tokens
@@ -75,6 +71,10 @@ def break_up_messages_to_chunks(
         else:
             current_tokens += n_tokens
             current_messages.append(m)
+
+    if len(current_messages) != 0:
+        chunks.append(get_plain_text(current_messages))
+
     return chunks
 
 

@@ -8,13 +8,12 @@ def run(bot):
         command = message.text.split(" ")
         if len(command) == 2:
             try:
+                await bot.send_message(message.chat.id, 'Processing..')
+
                 messages_list = get_messages_from_chat(message.chat.id, int(command[1]))
                 summary = get_summary(messages_list)
 
-                await bot.send_message(
-                    message.chat.id,
-                    summary
-                )
+                await bot.send_message(message.chat.id, summary)
             except Exception as e:
                 print(e)
                 await bot.send_message(
